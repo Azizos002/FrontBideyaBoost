@@ -33,7 +33,52 @@ export default function SignIn() {
     }));
   };
 
-  const handleSubmit = async (e) => {
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   // Validation for empty fields
+  //   if (Object.values(formData).some((value) => value === "")) {
+  //     setError("Veuillez remplir tous les champs !");
+  //     return;
+  //   }
+
+  //   try {
+  //     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/register`, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify(formData),
+  //     });
+
+  //     if (!res.ok) {
+  //       const data = await res.json();
+  //       throw new Error(data.message || "Erreur lors de l'inscription !");
+  //     }
+
+  //     // Afficher la notification de succès
+  //     toast.success(`Account created successfully ✅`, {
+  //       position: "top-right",
+  //       autoClose: 3000,
+  //       hideProgressBar: false,
+  //       closeOnClick: true,
+  //       pauseOnHover: true,
+  //       draggable: true,
+  //       progress: undefined,
+  //     });
+
+  //     // Redirection après un court délai pour permettre la notification
+  //     setTimeout(() => {
+  //       router.push("/LoginPage");
+  //     }, 3000);
+
+  //   } catch (err) {
+  //     setError(err.message);
+  //   }
+  // };
+
+
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     // Validation for empty fields
@@ -42,40 +87,24 @@ export default function SignIn() {
       return;
     }
 
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/register`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+    console.log("Form Data:", formData);
+    
+    toast.success(`Account created !`, {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
 
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.message || "Erreur lors de l'inscription !");
-      }
-
-      // Afficher la notification de succès
-      toast.success(`Account created successfully ✅`, {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-
-      // Redirection après un court délai pour permettre la notification
-      setTimeout(() => {
-        router.push("/LoginPage");
-      }, 3000);
-
-    } catch (err) {
-      setError(err.message);
-    }
+    setTimeout(() => {
+      router.push("/LoginPage");
+    }, 3000);
   };
+
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-white">

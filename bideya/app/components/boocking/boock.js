@@ -2,87 +2,50 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { FiSearch } from 'react-icons/fi';
+import 'react-toastify/dist/ReactToastify.css';
+import { toast, ToastContainer } from "react-toastify";
+
+// toast.configure();
 
 const BookingPage = () => {
   const [services, setServices] = useState([]); // State to hold the services data
   const [loading, setLoading] = useState(true); // State to track loading status
   const [error, setError] = useState(null); // State to track any error
-  const [confirmation, setConfirmation] = useState(null);
 
   useEffect(() => {
-    const fetchServices = async () => {
-      const token = localStorage.getItem('token'); // Retrieve the token from localStorage
-      if (!token) {
-        setError('No token found');
-        setLoading(false);
-        return;
-      }
+    // Static array of services
+    const staticServices = [
+      { _id: '1', fullName: 'John Doe', scholarLevel: 'PhD', availabalities: true },
+      { _id: '2', fullName: 'Jane Smith', scholarLevel: 'Master', availabalities: false },
+      { _id: '3', fullName: 'Alice Johnson', scholarLevel: 'Bachelor', availabalities: true },
+      { _id: '4', fullName: 'Bob Brown', scholarLevel: 'PhD', availabalities: false },
+      { _id: '5', fullName: 'Charlie White', scholarLevel: 'Master', availabalities: true },
+      { _id: '6', fullName: 'Diana Green', scholarLevel: 'Bachelor', availabalities: true },
+      { _id: '7', fullName: 'Ethan Black', scholarLevel: 'PhD', availabalities: false },
+      { _id: '8', fullName: 'Fiona Blue', scholarLevel: 'Master', availabalities: true },
+    ];
 
-      try {
-        const response = await fetch('http://localhost:5000/api/users/experts', {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to fetch services');
-        }
-
-        const data = await response.json();
-        setServices(data); // Set the fetched services to state
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchServices(); // Call the function to fetch services
+    setServices(staticServices);
+    setLoading(false);
   }, []); // Empty dependency array to run effect only once on mount
 
-  const handleBooking = async (service) => {
-    try {
-      setLoading(true);
-      setConfirmation(null); // Reset previous confirmation message
-
-      const token = localStorage.getItem('token');
-      if (!token) {
-        setConfirmation('Please log in to book a service');
-        setLoading(false);
-        return;
-      }
-
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/meetings/book`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ expert: service._id, date: new Date().toISOString() }), // Ensure date is passed if required
-      });
-      console.log(service._id);
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        console.log(response);
-        throw new Error(data.message || 'Booking failed');
-      }
-
-      setConfirmation('Meeting booked successfully');
-    } catch (error) {
-      console.error(error);
-      setConfirmation(error.message || 'Something went wrong');
-    } finally {
-      setLoading(false);
-    }
+  const handleBooking = (service) => {
+    toast.success(`Meet with ${service.fullName} Booked !`, {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+    
   };
 
   return (
     <>
+          <ToastContainer /> {/* Conteneur des notifications */}
+
       <nav className="flex items-center justify-between px-3 py-2 bg-white shadow-sm">
         <div className="text-2xl font-extrabold text-blue-900 ml-8">Bideya Boost</div>
 
@@ -116,9 +79,6 @@ const BookingPage = () => {
 
       <div className="flex flex-col items-center p-6">
         <div className="bg-yellow-400 text-xl font-bold py-2 px-6 rounded-md mb-6">BOOKING</div>
-
-        {/* Display Confirmation Message */}
-        {confirmation && <p className="text-green-600 font-bold">{confirmation}</p>}
 
         {/* Loading and error handling */}
         {loading ? (

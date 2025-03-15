@@ -29,7 +29,57 @@ export default function Login() {
     }));
   };
 
-  const handleLogin = async (e) => {
+  // const handleLogin = async (e) => {
+  //   e.preventDefault();
+
+  //   // Validation for empty fields
+  //   if (Object.values(formData).some((value) => value === "")) {
+  //     setError("Veuillez remplir tous les champs !");
+  //     return;
+  //   }
+
+  //   try {
+  //     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify(formData),
+  //     });
+
+  //     if (!res.ok) {
+  //       const data = await res.json();
+  //       throw new Error(data.message || "Erreur lors du Login !");
+  //     }
+
+  //     const data = await res.json();
+
+  //     // Store token and user info in localStorage
+  //     localStorage.setItem("token", data.token);
+  //     localStorage.setItem("user", JSON.stringify(data.user));
+
+  //     // Afficher la notification de succès
+  //     toast.success(`Welcome back ${data.user.name} !`, {
+  //       position: "top-right",
+  //       autoClose: 3000,
+  //       hideProgressBar: false,
+  //       closeOnClick: true,
+  //       pauseOnHover: true,
+  //       draggable: true,
+  //       progress: undefined,
+  //     });
+
+  //     // Redirection après un court délai pour permettre la notification
+  //     setTimeout(() => {
+  //       router.push("/PodcastPage");
+  //     }, 3000);
+  //   } catch (err) {
+  //     setError(err.message);
+  //   }
+  // };
+
+
+  const handleLogin = (e) => {
     e.preventDefault();
 
     // Validation for empty fields
@@ -38,46 +88,23 @@ export default function Login() {
       return;
     }
 
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+    console.log("Form Data:", formData);
+    
+    toast.success(`Welcome back!`, {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
 
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.message || "Erreur lors du Login !");
-      }
-
-      const data = await res.json();
-
-      // Store token and user info in localStorage
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
-
-      // Afficher la notification de succès
-      toast.success(`Welcome back ${data.user.name} !`, {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-
-      // Redirection après un court délai pour permettre la notification
-      setTimeout(() => {
-        router.push("/PodcastPage");
-      }, 3000);
-    } catch (err) {
-      setError(err.message);
-    }
+    setTimeout(() => {
+      router.push("/PodcastPage");
+    }, 3000);
   };
-
+  
   return (
     <div className="min-h-screen flex items-center justify-center bg-white">
       <ToastContainer /> {/* Conteneur des notifications */}
